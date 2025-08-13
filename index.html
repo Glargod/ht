@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hurricane Tracker with Cesium</title>
-  <script src="https://cesium.com/downloads/cesiumjs/releases/1.115/Build/Cesium/Cesium.js"></script>
-  <link href="https://cesium.com/downloads/cesiumjs/releases/1.115/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+  <title>Basic Cesium Viewer</title>
+  <script src="https://cesium.com/downloads/cesiumjs/releases/1.123/Build/Cesium/Cesium.js"></script>
+  <link href="https://cesium.com/downloads/cesiumjs/releases/1.123/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
   <style>
     html, body, #cesiumContainer {
       width: 100%;
-      height: 100%;
+      height: 100vh;
       margin: 0;
       padding: 0;
       overflow: hidden;
@@ -19,22 +19,23 @@
 <body>
   <div id="cesiumContainer"></div>
   <script>
-    // Set Cesium Ion access token
-    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNzNjZDU1YS03NWJlLTQ4NzUtYTI3NC01NzY0NjMwNTc0OWMiLCJpZCI6MzMxNDI5LCJpYXQiOjE3NTUwNTE5MTR9.felL3rJ_DfSVyH3JGUacR6A4MfLmcq3iEz3yIIEyL8k';
-
-    // Initialize Cesium viewer with terrain and imagery
-    const viewer = new Cesium.Viewer('cesiumContainer', {
-      terrain: Cesium.Terrain.fromWorldTerrain(), // Enable Cesium Ion terrain
-      imageryProvider: Cesium.createWorldImagery(), // Use Cesium Ion imagery
-      baseLayerPicker: true,
-      geocoder: true,
-      timeline: true,
-      animation: true
-    });
-
-    // Sample GeoJSON for hurricane track
-    const hurricaneGeoJson = {
-      type: 'FeatureCollection',
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4ZGVlYzIwNy1jMjQ0LTRjMmQtYjNmMC0yNWJmZDQ0NDhiNWMiLCJpZCI6MzMxNDI5LCJpYXQiOjE3NTUwNTMzNTh9._vnd20qIgz9s7ylOG0aKRAuXWO26EEy0cK4N6uJUAQY';
+    try {
+      const viewer = new Cesium.Viewer('cesiumContainer', {
+        terrain: Cesium.Terrain.fromWorldTerrain().catch(error => console.error('Terrain load failed:', error)),
+        imageryProvider: Cesium.createWorldImagery().catch(error => console.error('Imagery load failed:', error))
+      });
+      console.log('Viewer initialized:', viewer);
+      viewer.camera.flyTo({
+        destination: Cesium.Cartesian3.fromDegrees(-79.0, 26.0, 1000000),
+        orientation: { heading: 0, pitch: Cesium.Math.toRadians(-45), roll: 0 }
+      });
+    } catch (error) {
+      console.error('Viewer initialization failed:', error);
+    }
+  </script>
+</body>
+</html>      type: 'FeatureCollection',
       features: [{
         type: 'Feature',
         geometry: {
