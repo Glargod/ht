@@ -25,7 +25,7 @@
       padding: 20px;
       border-radius: 10px;
       z-index: 1000;
-      display: block; /* Initially visible */
+      display: block;
     }
   </style>
 </head>
@@ -33,14 +33,13 @@
   <div id="cesiumContainer"></div>
   <div id="loading">Loading Cesium Viewer...</div>
   <script>
-    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4ZGVeYzIwNy1cMjQ0LTRjMmQtYjNmMC0yNWJmZDQ0NDhiNWMiLCJpZCI6MzMxNDI5LCJpYXQiOjE3NTUwNTMzNTh9._vnd20qIgz9s7ylOG0aKRAuXWO26EEy0cK4N6uJUAQY';
+    // Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGjiOiI4ZGVlYzIwNy1cMjQ0LTRjMmQtYjNmMC0yNWJmZDQ0NDhiNWMiLCJpZCI6MzMxNDI5LCJpYXQiOjE3NTUwNTMzNTh9._vnd20qIgz9s7ylOG0aKRAuXWO26EEy0cK4N6uJUAQY';
     const viewer = new Cesium.Viewer('cesiumContainer');
-    viewer.camera.flyTo({
-      destination: Cesium.Cartesian3.fromDegrees(-79.0, 26.0, 200000),
-      orientation: { heading: 0, pitch: Cesium.Math.toRadians(-30), roll: 0 }
-    });
+    // viewer.camera.flyTo({
+    //   destination: Cesium.Cartesian3.fromDegrees(-79.0, 26.0, 200000),
+    //   orientation: { heading: 0, pitch: Cesium.Math.toRadians(-30), roll: 0 }
+    // });
 
-    // Hide loading indicator once viewer is ready
     viewer.scene.globe.tileLoadProgressEvent.addEventListener(function(tilesLeft) {
       if (tilesLeft === 0) {
         document.getElementById('loading').style.display = 'none';
