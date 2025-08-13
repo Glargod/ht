@@ -20,71 +20,7 @@
   <div id="cesiumContainer"></div>
   <script>
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4ZGVlYzIwNy1cMjQ0LTRjMmQtYjNmMC0yNWJmZDQ0NDhiNWMiLCJpZCI6MzMxNDI5LCJpYXQiOjE3NTUwNTMzNTh9._vnd20qIgz9s7ylOG0aKRAuXWO26EEy0cK4N6uJUAQY';
-    const viewer = new Cesium.Viewer('cesiumContainer');
-
-    // GeoJSON for hurricane track (commented out)
-    /*
-    const hurricaneGeoJson = {
-      type: 'FeatureCollection',
-      features: [{
-        type: 'Feature',
-        geometry: {
-          type: 'LineString',
-          coordinates: [
-            [-80.0, 25.0], [-79.5, 25.5], [-79.0, 26.0], [-78.5, 26.5]
-          ]
-        },
-        properties: { name: 'Hurricane Track' }
-      }, {
-        type: 'Feature',
-        geometry: {
-          type: 'LineString',
-          coordinates: [
-            [-78.5, 26.5], [-78.0, 27.0], [-77.5, 27.5]
-          ]
-        },
-        properties: { name: 'Projected Path' }
-      }]
-    };
-    viewer.dataSources.add(Cesium.GeoJsonDataSource.load(hurricaneGeoJson, {
-      stroke: Cesium.Color.RED,
-      strokeWidth: 4
-    })).then(dataSource => {
-      viewer.zoomTo(dataSource);
-    }).catch(error => console.error('GeoJSON load failed:', error));
-    */
-
-    // CZML for animation (commented out)
-    /*
-    const czml = [{
-      id: 'document',
-      name: 'HurricaneAnimation',
-      version: '1.0',
-      clock: {
-        interval: '2025-08-12T00:00:00Z/2025-08-13T00:00:00Z',
-        currentTime: '2025-08-12T00:00:00Z',
-        multiplier: 3600,
-        range: Cesium.ClockRange.LOOP_STOP
-      }
-    }, {
-      id: 'hurricane',
-      position: {
-        interpolationAlgorithm: 'LAGRANGE',
-        interpolationDegree: 1,
-        epoch: '2025-08-12T00:00:00Z',
-        cartesian: [
-          0, Cesium.Math.toRadians(-80.0), Cesium.Math.toRadians(25.0), 10000,
-          3600, Cesium.Math.toRadians(-79.5), Cesium.Math.toRadians(25.5), 10000,
-          7200, Cesium.Math.toRadians(-79.0), Cesium.Math.toRadians(26.0), 10000,
-          10800, Cesium.Math.toRadians(-78.5), Cesium.Math.toRadians(26.5), 10000
-        ]
-      },
-      point: { color: Cesium.Color.BLUE, pixelSize: 10 }
-    }];
-    viewer.dataSources.add(Cesium.CzmlDataSource.load(czml)).then(dataSource => {
-      viewer.zoomTo(dataSource);
-    }).catch(error => console.error('CZML load failed:', error));
-    */
+    const viewer = new Cesium.Viewer('cesiumContainer', {});
 
     viewer.camera.flyTo({
       destination: Cesium.Cartesian3.fromDegrees(-79.0, 26.0, 200000),
