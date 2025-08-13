@@ -21,11 +21,7 @@
   <script>
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4ZGVlYzIwNy1cMjQ0LTRjMmQtYjNmMC0yNWJmZDQ0NDhiNWMiLCJpZCI6MzMxNDI5LCJpYXQiOjE3NTUwNTMzNTh9._vnd20qIgz9s7ylOG0aKRAuXWO26EEy0cK4N6uJUAQY';
     const viewer = new Cesium.Viewer('cesiumContainer', {
-      imageryProvider: new Cesium.OpenStreetMapImageryProvider(),
-      terrain: Cesium.Terrain.fromWorldTerrain({
-        requestWaterMask: false,
-        requestVertexNormals: false
-      }).catch(error => console.error('Terrain load failed:', error))
+      imageryProvider: new Cesium.OpenStreetMapImageryProvider()
     });
 
     // GeoJSON for hurricane track
