@@ -24,7 +24,8 @@
       imageryProvider: new Cesium.OpenStreetMapImageryProvider()
     });
 
-    // GeoJSON for hurricane track
+    // GeoJSON for hurricane track (commented out)
+    /*
     const hurricaneGeoJson = {
       type: 'FeatureCollection',
       features: [{
@@ -53,6 +54,7 @@
     })).then(dataSource => {
       viewer.zoomTo(dataSource);
     }).catch(error => console.error('GeoJSON load failed:', error));
+    */
 
     // CZML for animation (commented out)
     /*
