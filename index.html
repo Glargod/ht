@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hurricane Tracker with Cesium</title>
+  <title>Basic Cesium Viewer</title>
   <script src="https://cesium.com/downloads/cesiumjs/releases/1.123/Build/Cesium/Cesium.js"></script>
   <link href="https://cesium.com/downloads/cesiumjs/releases/1.123/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
   <style>
@@ -20,8 +20,7 @@
   <div id="cesiumContainer"></div>
   <script>
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4ZGVlYzIwNy1cMjQ0LTRjMmQtYjNmMC0yNWJmZDQ0NDhiNWMiLCJpZCI6MzMxNDI5LCJpYXQiOjE3NTUwNTMzNTh9._vnd20qIgz9s7ylOG0aKRAuXWO26EEy0cK4N6uJUAQY';
-    const viewer = new Cesium.Viewer('cesiumContainer', {});
-
+    const viewer = new Cesium.Viewer('cesiumContainer');
     viewer.camera.flyTo({
       destination: Cesium.Cartesian3.fromDegrees(-79.0, 26.0, 200000),
       orientation: { heading: 0, pitch: Cesium.Math.toRadians(-30), roll: 0 }
