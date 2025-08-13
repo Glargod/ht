@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hurricane Tracker with Cesium</title>
+  <script src="https://cesium.com/downloads/cesiumjs/releases/1.115/Build/Cesium/Cesium.js"></script>
+  <link href="https://cesium.com/downloads/cesiumjs/releases/1.115/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+  <style>
+    html, body, #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <div id="cesiumContainer"></div>
+  <script>
+    // Set Cesium Ion access token
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNzNjZDU1YS03NWJlLTQ4NzUtYTI3NC01NzY0NjMwNTc0OWMiLCJpZCI6MzMxNDI5LCJpYXQiOjE3NTUwNTE5MTR9.felL3rJ_DfSVyH3JGUacR6A4MfLmcq3iEz3yIIEyL8k';
+
+    // Initialize Cesium viewer with terrain and imagery
+    const viewer = new Cesium.Viewer('cesiumContainer', {
+      terrain: Cesium.Terrain.fromWorldTerrain(), // Enable Cesium Ion terrain
+      imageryProvider: Cesium.createWorldImagery(), // Use Cesium Ion imagery
+      baseLayerPicker: true,
+      geocoder: true,
+      timeline: true,
+      animation: true
+    });
+
+    // Sample GeoJSON for hurricane track
+    const hurricaneGeoJson = {
+      type: 'FeatureCollection',
+      features: [{
+        type: 'Feature',
+        geometry: {
+          type: 'LineString',
+          coordinates: [
+            [-80.0, 25.0], [-79.5, 25.5], [-79.0, 26.0], [-78.5, 26.5]
+          ]
+        },
+        properties: { name: 'Hurricane Track' }
+      }, {
+        type: 'Feature',
+        geometry: {
+          type: 'LineString',
+          coordinates: [
+            [-78.5, 26.5], [-78.0, 27.0], [-77.5, 27.5]
+          ]
+        },
+        properties: { name: 'Projected Path' }
+      }]
+    };
+
+    // Add hurricane track
+    viewer.dataSources.add(Cesium.GeoJsonDataSource.load(hurricaneGeoJson, {
+      stroke: Cesium.Color.RED,
+      strokeWidth: 4,
+      clampToGround: true,
+      polyline: {
+        material: new Cesium.PolylineDashMaterialProperty({
+          color: Cesium.Color.YELLOW,
+          dashLength: 20
+        })
+      }
+    })).then(dataSource => {
+      console.log('GeoJSON loaded:', dataSource);
+    }).catch(error => {
+      console.error('Error loading GeoJSON:', error);
+    });
+
+    // Sample CZML for hurricane animation
+    const czml = [{
+      id: 'document',
+      name: 'HurricaneAnimation',
+      version: '1.0',
+      clock: {
+        interval: '2025-08-12T00:00:00Z/2025-08-13T00:00:00Z',
+        currentTime: '2025-08-12T00:00:00Z',
+        multiplier: 3600,
+        range: Cesium.ClockRange.LOOP_STOP,
+        step: Cesium.ClockStep.SYSTEM_CLOCK_MULTIPLIER
+      }
+    }, {
+      id: 'hurricane',
+      position: {
+        interpolationAlgorithm: 'LAGRANGE',
+        interpolationDegree: 1,
+        epoch: '2025-08-12T00:00:00Z',
+        cartesian: [
+          0, Cesium.Math.toRadians(-80.0), Cesium.Math.toRadians(25.0), 10000,
+          3600, Cesium.Math.toRadians(-79.5), Cesium.Math.toRadians(25.5), 10000,
+          7200, Cesium.Math.toRadians(-79.0), Cesium.Math.toRadians(26.0), 10000,
+          10800, Cesium.Math.toRadians(-78.5), Cesium.Math.toRadians(26.5), 10000
+        ]
+      },
+      point: {
+        color: Cesium.Color.BLUE,
+        pixelSize: 10,
+        outlineColor: Cesium.Color.WHITE,
+        outlineWidth: 2
+      },
+      path: {
+        material: Cesium.Color.RED,
+        width: 3,
+        leadTime: 0,
+        trailTime: 86400
+      }
+    }];
+
+    // Load CZML for animation
+    viewer.dataSources.add(Cesium.CzmlDataSource.load(czml)).then(dataSource => {
+      console.log('CZML loaded:', dataSource);
+    }).catch(error => {
+      console.error('Error loading CZML:', error);
+    });
+
+    // Set camera for top-down view
+    viewer.camera.setView({
+      destination: Cesium.Cartesian3.fromDegrees(-79.0, 26.0, 200000),
+      orientation: {
+        heading: Cesium.Math.toRadians(0),
+        pitch: Cesium.Math.toRadians(-90),
+        roll: 0.0
+      }
+    });
+
+    // Ensure animation runs
+    viewer.clock.shouldAnimate = true;
+
+    // Debug camera and rendering
+    console.log('Camera position:', viewer.camera.position);
+    console.log('Camera orientation:', {
+      heading: Cesium.Math.toDegrees(viewer.camera.heading),
+      pitch: Cesium.Math.toDegrees(viewer.camera.pitch),
+      roll: Cesium.Math.toDegrees(viewer.camera.roll)
+    });
+
+    // Monitor imagery/terrain loading
+    viewer.scene.globe.tileLoadProgress.addEventListener(number => {
+      if (number === 0) {
+        console.log('Imagery and terrain loading complete.');
+        if (!viewer.scene.globe.show) {
+          console.error('Globe not visible. Check imagery/terrain or token.');
+        }
+      }
+    });
+  </script>
+</body>
+</html>
