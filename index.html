@@ -54,7 +54,8 @@
       viewer.zoomTo(dataSource);
     }).catch(error => console.error('GeoJSON load failed:', error));
 
-    // CZML for animation
+    // CZML for animation (commented out)
+    /*
     const czml = [{
       id: 'document',
       name: 'HurricaneAnimation',
@@ -83,6 +84,7 @@
     viewer.dataSources.add(Cesium.CzmlDataSource.load(czml)).then(dataSource => {
       viewer.zoomTo(dataSource);
     }).catch(error => console.error('CZML load failed:', error));
+    */
 
     viewer.camera.flyTo({
       destination: Cesium.Cartesian3.fromDegrees(-79.0, 26.0, 200000),
